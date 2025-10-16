@@ -1,14 +1,12 @@
 package com.singletonv.notes.presentation.screens.notes
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.singletonv.notes.domain.Note
 
 @Composable
 fun NotesScreen(
@@ -24,44 +23,56 @@ fun NotesScreen(
     viewModel: NotesViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
-    val verticalScrollState = rememberScrollState(0)
-    val horizontalScrollState = rememberScrollState(0)
 
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .padding(top = 48.dp)
-            .verticalScroll(verticalScrollState),
+            .padding(top = 48.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(horizontalScrollState),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            state.pinnedNotes.forEach { note ->
-                Text(
-                    modifier = modifier.clickable {
-                        viewModel.processCommand(
-                            command = NotesCommand.SwitchPinnedStatus(note.id)
-                        )
-                    },
-                    text = "${note.title} - ${note.content}",
-                    fontSize = 24.sp
-                )
+        item {
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(state.pinnedNotes) { note ->
+                    NoteCard(
+                        note = note,
+                        onNoteClick = {
+                            viewModel.processCommand(
+                                command = NotesCommand.SwitchPinnedStatus(it.id)
+                            )
+                        }
+                    )
+                }
             }
         }
 
-        state.otherNotes.forEach { note ->
-            Text(
-                modifier = Modifier.clickable {
+
+        items(state.otherNotes) { note ->
+            NoteCard(
+                note = note,
+                onNoteClick = {
                     viewModel.processCommand(
-                        command = NotesCommand.SwitchPinnedStatus(note.id)
+                        command = NotesCommand.SwitchPinnedStatus(it.id)
                     )
-                },
-                text = "${note.title} - ${note.content}",
-                fontSize = 24.sp
+                }
             )
         }
     }
+}
+
+@Composable
+fun NoteCard(
+    modifier: Modifier = Modifier,
+    note: Note,
+    onNoteClick: (Note) -> Unit = {}
+) {
+    Text(
+        modifier = modifier.clickable {
+            onNoteClick(note)
+        },
+        text = "${note.title} - ${note.content}",
+        fontSize = 24.sp
+    )
 }
