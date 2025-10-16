@@ -1,8 +1,10 @@
 package com.singletonv.notes.domain
 
-class SwitchPinnedStatusUseCase {
+class SwitchPinnedStatusUseCase(
+    private val repository: NotesRepository
+) {
 
-    operator fun invoke(id: Int) {
-        TODO()
+    operator fun invoke(noteId: Int) {
+        repository.switchPinStatus(noteId)
     }
 }

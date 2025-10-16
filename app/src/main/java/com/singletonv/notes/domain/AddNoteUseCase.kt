@@ -1,8 +1,10 @@
 package com.singletonv.notes.domain
 
-class AddNoteUseCase {
+class AddNoteUseCase(
+    private val repository: NotesRepository
+) {
 
     operator fun invoke(note: Note) {
-        TODO()
+        repository.addNote(note)
     }
 }
