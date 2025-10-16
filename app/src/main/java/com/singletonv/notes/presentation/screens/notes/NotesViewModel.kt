@@ -26,11 +26,7 @@ class NotesViewModel : ViewModel() {
 
     private val repository = TestNotesRepositoryImpl
 
-    private val addNoteUseCase = AddNoteUseCase(repository)
-    private val deleteNoteUseCase = DeleteNoteUseCase(repository)
-    private val editNoteUseCase = EditNoteUseCase(repository)
     private val getAllNotesUseCase = GetAllNotesUseCase(repository)
-    private val getNoteUseCase = GetNoteUseCase(repository)
     private val searchNotesUseCase = SearchNotesUseCase(repository)
     private val switchPinnedStatusUseCase = SwitchPinnedStatusUseCase(repository)
 
@@ -40,7 +36,6 @@ class NotesViewModel : ViewModel() {
     val state = _state.asStateFlow()
 
     init {
-        addSomeNotes()
         query
             .onEach { input ->
                 _state.update { it.copy(query = input) }
@@ -64,30 +59,9 @@ class NotesViewModel : ViewModel() {
             .launchIn(viewModelScope)
     }
 
-    // TODO: remove after full implementation
-    private fun addSomeNotes() {
-        repeat(50) {
-            viewModelScope.launch {
-                addNoteUseCase(
-                    title = "Title #$it",
-                    content = "Content #$it"
-                )
-            }
-        }
-    }
-
     fun processCommand(command: NotesCommand) {
         viewModelScope.launch {
             when (command) {
-                is NotesCommand.DeleteNote -> deleteNoteUseCase(command.noteId)
-                is NotesCommand.EditNote -> {
-                    val note =
-                        getNoteUseCase(command.note.id) // TODO: remove after checking use case
-                    val oldTitle = note.title
-                    val newTitle = "$oldTitle edited"
-                    editNoteUseCase(note.copy(title = newTitle))
-                }
-
                 is NotesCommand.InputSearchQuery -> query.update { command.query }
                 is NotesCommand.SwitchPinnedStatus -> switchPinnedStatusUseCase(command.noteId)
             }
@@ -99,10 +73,6 @@ sealed interface NotesCommand {
 
     data class InputSearchQuery(val query: String) : NotesCommand
     data class SwitchPinnedStatus(val noteId: Int) : NotesCommand
-
-    // Temp
-    data class DeleteNote(val noteId: Int) : NotesCommand
-    data class EditNote(val note: Note) : NotesCommand
 }
 
 data class NotesScreenState(
