@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -21,7 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,10 +32,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.singletonv.notes.domain.Note
-import com.singletonv.notes.ui.theme.Green
-import com.singletonv.notes.ui.theme.OtherNotesColors
-import com.singletonv.notes.ui.theme.PinnedNotesColors
-import com.singletonv.notes.ui.theme.Yellow200
+import com.singletonv.notes.presentation.ui.theme.OtherNotesColors
+import com.singletonv.notes.presentation.ui.theme.PinnedNotesColors
+import com.singletonv.notes.presentation.utils.DateFormatter
 
 @Composable
 fun NotesScreen(
@@ -264,7 +261,7 @@ fun NoteCard(
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = note.updatedAt.toString(),
+            text = DateFormatter.formatDateToString(note.updatedAt),
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

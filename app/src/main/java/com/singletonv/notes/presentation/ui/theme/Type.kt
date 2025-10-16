@@ -1,4 +1,4 @@
-package com.singletonv.notes.ui.theme
+package com.singletonv.notes.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
