@@ -30,10 +30,12 @@ object TestNotesRepositoryImpl : NotesRepository {
     }
 
     override fun editNote(note: Note) {
-        notesListFlow.update { notes -> notes.map {
-            if (it.id == note.id) note
-            else it
-        } }
+        notesListFlow.update { notes ->
+            notes.map {
+                if (it.id == note.id) note
+                else it
+            }
+        }
     }
 
     override fun getAllNotes(): Flow<List<Note>> {
@@ -56,9 +58,11 @@ object TestNotesRepositoryImpl : NotesRepository {
     }
 
     override fun switchPinStatus(noteId: Int) {
-        notesListFlow.value.map {
-            if (it.id == noteId) it.copy(isPinned = !it.isPinned)
-            else it
+        notesListFlow.update { notes ->
+            notes.map {
+                if (it.id == noteId) it.copy(isPinned = !it.isPinned)
+                else it
+            }
         }
     }
 }
