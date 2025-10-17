@@ -154,27 +154,27 @@ fun EditNoteScreen(
                             )
                         }
                     )
-                }
 
-                Button(
-                    modifier = Modifier
-                        .padding(horizontal = 24.dp)
-                        .fillMaxWidth(),
-                    onClick = {
-                        viewModel.processCommand(EditNoteCommand.Save)
-                    },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        disabledContentColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                        disabledContainerColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    enabled = currentState.isSaveEnabled
-                ) {
-                    Text(
-                        text = "Save Note"
-                    )
+                    Button(
+                        modifier = Modifier
+                            .padding(horizontal = 24.dp)
+                            .fillMaxWidth(),
+                        onClick = {
+                            viewModel.processCommand(EditNoteCommand.Save)
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            disabledContentColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                            disabledContainerColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        enabled = currentState.isSaveEnabled
+                    ) {
+                        Text(
+                            text = "Save Note"
+                        )
+                    }
                 }
             }
         }
