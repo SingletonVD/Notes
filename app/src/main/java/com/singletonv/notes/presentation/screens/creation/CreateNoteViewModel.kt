@@ -23,7 +23,7 @@ class CreateNoteViewModel : ViewModel() {
     fun processCommand(command: CreateNoteCommand) {
         when (command) {
             CreateNoteCommand.Back -> {
-                _state.value = CreateNoteState.Finished
+                _state.update { CreateNoteState.Finished }
             }
 
             is CreateNoteCommand.InputContent -> {
