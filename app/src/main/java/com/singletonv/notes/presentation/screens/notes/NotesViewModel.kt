@@ -1,13 +1,10 @@
 package com.singletonv.notes.presentation.screens.notes
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.singletonv.notes.data.TestNotesRepositoryImpl
-import com.singletonv.notes.domain.AddNoteUseCase
-import com.singletonv.notes.domain.DeleteNoteUseCase
-import com.singletonv.notes.domain.EditNoteUseCase
+import com.singletonv.notes.data.NotesRepositoryImpl
 import com.singletonv.notes.domain.GetAllNotesUseCase
-import com.singletonv.notes.domain.GetNoteUseCase
 import com.singletonv.notes.domain.Note
 import com.singletonv.notes.domain.SearchNotesUseCase
 import com.singletonv.notes.domain.SwitchPinnedStatusUseCase
@@ -22,9 +19,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-class NotesViewModel : ViewModel() {
+class NotesViewModel(context: Context) : ViewModel() {
 
-    private val repository = TestNotesRepositoryImpl
+    private val repository = NotesRepositoryImpl.getInstance(context)
 
     private val getAllNotesUseCase = GetAllNotesUseCase(repository)
     private val searchNotesUseCase = SearchNotesUseCase(repository)

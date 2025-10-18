@@ -1,5 +1,6 @@
 package com.singletonv.notes.presentation.screens.notes
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
@@ -31,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -46,7 +48,10 @@ import com.singletonv.notes.presentation.utils.DateFormatter
 @Composable
 fun NotesScreen(
     modifier: Modifier = Modifier,
-    viewModel: NotesViewModel = viewModel(),
+    context: Context = LocalContext.current.applicationContext,
+    viewModel: NotesViewModel = viewModel {
+        NotesViewModel(context)
+    },
     onNoteClick: (Note) -> Unit,
     onAddNoteClick: () -> Unit
 ) {

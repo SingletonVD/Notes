@@ -1,8 +1,9 @@
 package com.singletonv.notes.presentation.screens.editing
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.singletonv.notes.data.TestNotesRepositoryImpl
+import com.singletonv.notes.data.NotesRepositoryImpl
 import com.singletonv.notes.domain.DeleteNoteUseCase
 import com.singletonv.notes.domain.EditNoteUseCase
 import com.singletonv.notes.domain.GetNoteUseCase
@@ -12,9 +13,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class EditNoteViewModel(private val noteId: Int) : ViewModel() {
+class EditNoteViewModel(private val noteId: Int, context: Context) : ViewModel() {
 
-    private val repository = TestNotesRepositoryImpl
+    private val repository = NotesRepositoryImpl.getInstance(context)
     private val getNoteUseCase = GetNoteUseCase(repository)
     private val editNoteUseCase = EditNoteUseCase(repository)
     private val deleteNoteUseCase = DeleteNoteUseCase(repository)
