@@ -1,6 +1,8 @@
 package com.singletonv.notes.domain
 
-class DeleteNoteUseCase(
+import javax.inject.Inject
+
+class DeleteNoteUseCase @Inject constructor(
     private val repository: NotesRepository
 ) {
 

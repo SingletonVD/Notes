@@ -1,14 +1,13 @@
 package com.singletonv.notes.data
 
-import android.content.Context
 import com.singletonv.notes.domain.Note
 import com.singletonv.notes.domain.NotesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class NotesRepositoryImpl private constructor(context: Context) : NotesRepository {
+class NotesRepositoryImpl @Inject constructor(notesDatabase: NotesDatabase) : NotesRepository {
 
-    private val notesDatabase = NotesDatabase.getInstance(context)
     private val notesDao = notesDatabase.notesDao()
 
     override suspend fun addNote(
@@ -43,20 +42,5 @@ class NotesRepositoryImpl private constructor(context: Context) : NotesRepositor
 
     override suspend fun switchPinStatus(noteId: Int) {
         notesDao.switchPinnedStatus(noteId)
-    }
-
-    companion object {
-        private var instance: NotesRepositoryImpl? = null
-        private val LOCK = Any()
-
-        fun getInstance(context: Context): NotesRepositoryImpl {
-
-            instance?.let { return it }
-
-            synchronized(LOCK) {
-                instance?.let { return it }
-                return NotesRepositoryImpl(context)
-            }
-        }
     }
 }
