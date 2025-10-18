@@ -1,6 +1,7 @@
 package com.singletonv.notes.di
 
 import android.content.Context
+import com.singletonv.notes.data.NotesDao
 import com.singletonv.notes.data.NotesDatabase
 import com.singletonv.notes.data.NotesRepositoryImpl
 import com.singletonv.notes.domain.NotesRepository
@@ -28,6 +29,12 @@ interface DataModule {
         @Provides
         fun provideNotesDatabase(@ApplicationContext context: Context): NotesDatabase {
             return NotesDatabase.Companion.getInstance(context)
+        }
+
+        @Singleton
+        @Provides
+        fun provideNotesDao(notesDatabase: NotesDatabase): NotesDao {
+            return notesDatabase.notesDao()
         }
     }
 }

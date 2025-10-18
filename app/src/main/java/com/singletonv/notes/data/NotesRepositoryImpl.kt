@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class NotesRepositoryImpl @Inject constructor(notesDatabase: NotesDatabase) : NotesRepository {
-
-    private val notesDao = notesDatabase.notesDao()
+class NotesRepositoryImpl @Inject constructor(
+    private val notesDao: NotesDao
+) : NotesRepository {
 
     override suspend fun addNote(
         title: String,
