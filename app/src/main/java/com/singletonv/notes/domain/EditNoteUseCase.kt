@@ -7,6 +7,23 @@ class EditNoteUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(note: Note) {
-        repository.editNote(note.copy(updatedAt = System.currentTimeMillis()))
+        val filteredContent = note.content.filter {
+            when (it) {
+                is ContentItem.Image -> true
+                is ContentItem.Text -> it.content.isNotBlank()
+            }
+        }.map {
+            when (it) {
+                is ContentItem.Image -> it
+                is ContentItem.Text -> it.copy(content = it.content.trim())
+            }
+        }
+
+        repository.editNote(
+            note.copy(
+                content = filteredContent,
+                updatedAt = System.currentTimeMillis()
+            )
+        )
     }
 }

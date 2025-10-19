@@ -21,7 +21,7 @@ object DateFormatter {
         return when {
             diff < millisInHour -> "Just now"
             diff < millisInDay -> {
-                val hours = TimeUnit.HOURS.toHours(diff)
+                val hours = TimeUnit.MILLISECONDS.toHours(diff)
                 "$hours h ago"
             }
             else -> formatter.format(timestamp)

@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.singletonv.notes.presentation.components.Content
-import com.singletonv.notes.presentation.screens.creation.CreateNoteCommand
 import com.singletonv.notes.presentation.ui.theme.CustomIcons
 import com.singletonv.notes.presentation.utils.DateFormatter
 

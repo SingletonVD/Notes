@@ -4,11 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,15 +30,18 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import coil3.compose.AsyncImage
 import com.singletonv.notes.R
 import com.singletonv.notes.domain.ContentItem
 import com.singletonv.notes.domain.Note
@@ -119,7 +124,7 @@ fun NotesScreen(
                         items = state.pinnedNotes,
                         key = { _, note -> note.id }
                     ) { index, note ->
-                        NoteCard(
+                        PinnedNoteCard(
                             modifier = Modifier.widthIn(max = 160.dp),
                             note = note,
                             onNoteClick = onNoteClick,
@@ -153,7 +158,7 @@ fun NotesScreen(
                 items = state.otherNotes,
                 key = { _, note -> note.id }
             ) { index, note ->
-                NoteCard(
+                OtherNoteCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp),
@@ -242,7 +247,114 @@ private fun Subtitle(
 }
 
 @Composable
-fun NoteCard(
+fun OtherNoteCard(
+    modifier: Modifier = Modifier,
+    note: Note,
+    backgroundColor: Color,
+    onNoteClick: (Note) -> Unit = {},
+    onLongClick: (Note) -> Unit = {}
+) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(16.dp))
+            .background(backgroundColor)
+            .combinedClickable(
+                onClick = { onNoteClick(note) },
+                onLongClick = { onLongClick(note) }
+            )
+    ) {
+
+        OtherNoteTitle(note = note)
+
+        note.content
+            .filterIsInstance<ContentItem.Text>()
+            .joinToString("\n") { it.content }
+            .takeIf { it.isNotBlank() }
+            ?.let {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                    text = it,
+                    fontSize = 16.sp,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+    }
+}
+
+@Composable
+fun OtherNoteTitle(
+    modifier: Modifier = Modifier,
+    note: Note
+) {
+    val firstPhoto = note.content.firstOrNull { it is ContentItem.Image }
+
+    if (firstPhoto is ContentItem.Image) {
+        Box(
+            modifier.fillMaxWidth()
+                .heightIn(max = 120.dp)
+                .clip(RoundedCornerShape(8.dp))
+        ) {
+            AsyncImage(
+                model = firstPhoto.url,
+                contentDescription = "Image from gallery",
+                contentScale = ContentScale.FillWidth
+            )
+
+            OtherNoteTitleText(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomStart)
+                    .padding(16.dp),
+                note = note,
+                titleColor = MaterialTheme.colorScheme.onPrimary,
+                updatedAtColor = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+    } else {
+        OtherNoteTitleText(
+            modifier = modifier.padding(16.dp),
+            note = note,
+            titleColor = MaterialTheme.colorScheme.onSurface,
+            updatedAtColor = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+fun OtherNoteTitleText(
+    modifier: Modifier = Modifier,
+    note: Note,
+    titleColor: Color,
+    updatedAtColor: Color
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            text = note.title,
+            fontSize = 14.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = titleColor
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = DateFormatter.formatDateToString(note.updatedAt),
+            fontSize = 12.sp,
+            color = updatedAtColor
+        )
+    }
+}
+
+@Composable
+fun PinnedNoteCard(
     modifier: Modifier = Modifier,
     note: Note,
     backgroundColor: Color,
@@ -275,12 +387,13 @@ fun NoteCard(
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
-
         note.content
             .filterIsInstance<ContentItem.Text>()
             .joinToString("\n") { it.content }
-            .let {
+            .takeIf { it.isNotBlank() }
+            ?.let {
+                Spacer(modifier = Modifier.height(24.dp))
+
                 Text(
                     text = it,
                     fontSize = 16.sp,
