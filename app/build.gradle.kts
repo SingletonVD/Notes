@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.androidx.core.splashscreen)
     ksp(libs.hilt.android.compiler)
     ksp(libs.androidx.room.compiler)
     testImplementation(libs.junit)

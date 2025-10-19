@@ -15,4 +15,6 @@
     <string name="all_notes">All notes</string>
     <string name="pinned">Pinned</string>
     <string name="others">Others</string>
+    <string name="just_now">Just now</string>
+    <string name="h_ago">%1$d h ago</string>
 </resources>
