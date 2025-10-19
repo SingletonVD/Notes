@@ -33,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -305,22 +306,52 @@ fun OtherNoteTitle(
                 contentScale = ContentScale.FillWidth
             )
 
-            OtherNoteTitleText(
+            OtherNoteTitleOnPicture(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomStart)
                     .padding(16.dp),
-                note = note,
-                titleColor = MaterialTheme.colorScheme.onPrimary,
-                updatedAtColor = MaterialTheme.colorScheme.onPrimary
+                note = note
             )
         }
     } else {
         OtherNoteTitleText(
             modifier = modifier.padding(16.dp),
-            note = note,
-            titleColor = MaterialTheme.colorScheme.onSurface,
-            updatedAtColor = MaterialTheme.colorScheme.onSurfaceVariant
+            note = note
+        )
+    }
+}
+
+@Composable
+fun OtherNoteTitleOnPicture(
+    modifier: Modifier = Modifier,
+    note: Note
+) {
+    Column(
+        modifier = modifier
+            .background(
+                brush = Brush.verticalGradient(
+                    listOf(
+                        Color.Transparent,
+                        MaterialTheme.colorScheme.onSurface
+                    )
+                )
+            )
+    ) {
+        Text(
+            text = note.title,
+            fontSize = 14.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.onPrimary
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = DateFormatter.formatDateToString(note.updatedAt),
+            fontSize = 12.sp,
+            color = MaterialTheme.colorScheme.onPrimary
         )
     }
 }
@@ -328,9 +359,7 @@ fun OtherNoteTitle(
 @Composable
 fun OtherNoteTitleText(
     modifier: Modifier = Modifier,
-    note: Note,
-    titleColor: Color,
-    updatedAtColor: Color
+    note: Note
 ) {
     Column(
         modifier = modifier
@@ -340,7 +369,7 @@ fun OtherNoteTitleText(
             fontSize = 14.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = titleColor
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -348,7 +377,7 @@ fun OtherNoteTitleText(
         Text(
             text = DateFormatter.formatDateToString(note.updatedAt),
             fontSize = 12.sp,
-            color = updatedAtColor
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
