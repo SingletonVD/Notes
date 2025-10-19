@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Notes</string>
+    <string name="search">Search…</string>
+    <string name="note_something_down">Note something down</string>
+    <string name="image_from_gallery">Image from gallery</string>
+    <string name="remove_image_from_note">Remove image from note</string>
+    <string name="create_note">Create Note</string>
+    <string name="back">Back</string>
+    <string name="add_photo_from_gallery">Add photo from gallery</string>
+    <string name="title">Title</string>
+    <string name="save_note">Save Note</string>
+    <string name="edit_note">Edit Note</string>
+    <string name="delete_note">Delete note</string>
+    <string name="button_add_note">Button add note</string>
+    <string name="all_notes">All notes</string>
+    <string name="pinned">Pinned</string>
+    <string name="others">Others</string>
 </resources>

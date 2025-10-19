@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -70,7 +71,7 @@ fun NotesScreen(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_add_note),
-                    contentDescription = "Button add note"
+                    contentDescription = stringResource(R.string.button_add_note)
                 )
             }
         }
@@ -81,7 +82,7 @@ fun NotesScreen(
             item {
                 Title(
                     modifier = Modifier.padding(horizontal = 24.dp),
-                    text = "All notes"
+                    text = stringResource(R.string.all_notes)
                 )
             }
 
@@ -106,7 +107,7 @@ fun NotesScreen(
             item {
                 Subtitle(
                     modifier = Modifier.padding(horizontal = 24.dp),
-                    text = "Pinned"
+                    text = stringResource(R.string.pinned)
                 )
             }
 
@@ -147,7 +148,7 @@ fun NotesScreen(
             item {
                 Subtitle(
                     modifier = Modifier.padding(horizontal = 24.dp),
-                    text = "Others"
+                    text = stringResource(R.string.others)
                 )
             }
 
@@ -211,7 +212,7 @@ private fun SearchBar(
         onValueChange = onQueryChange,
         placeholder = {
             Text(
-                text = "Search...",
+                text = stringResource(R.string.search),
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -296,13 +297,14 @@ fun OtherNoteTitle(
 
     if (firstPhoto is ContentItem.Image) {
         Box(
-            modifier.fillMaxWidth()
+            modifier
+                .fillMaxWidth()
                 .heightIn(max = 120.dp)
                 .clip(RoundedCornerShape(8.dp))
         ) {
             AsyncImage(
                 model = firstPhoto.url,
-                contentDescription = "Image from gallery",
+                contentDescription = stringResource(R.string.image_from_gallery),
                 contentScale = ContentScale.FillWidth
             )
 
